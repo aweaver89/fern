@@ -45,24 +45,27 @@ readonly class Shape
     /**
      * @param 
      */
-    static function circle(Circle $circle): Shape
-    {
+    static function circle(
+        Circle $circle
+    ): Shape {
         return new Shape([
             'type' => 'circle',
             'circle' => $circle
         ]);
     }
 
-    static function square(Square $square): Shape
-    {
+    static function square(
+        Square $square
+    ): Shape {
         return new Shape([
             'type' => 'square',
             'square' => $square
         ]);
     }
 
-    static function _unknown(mixed $_unknown): Shape
-    {
+    static function _unknown(
+        mixed $_unknown
+    ): Shape {
         return new Shape([
             'unknown' => $_unknown
         ]);
