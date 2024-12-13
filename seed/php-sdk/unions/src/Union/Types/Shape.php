@@ -24,7 +24,7 @@ class Shape extends JsonSerializableType
     /**
      * @var ?object $_unknown
      */
-    private ?object $_unknown;
+    public ?object $_unknown;
 
     /**
      * @param ?array{
