@@ -1,9 +1,10 @@
 <?php
 
+use Seed\Core\Json\JsonSerializableType;
 use Seed\Union\Types\Circle;
 use Seed\Union\Square;
 
-readonly class Shape
+class Shape extends JsonSerializableType
 {
     /**
      * @var ShapeType $type

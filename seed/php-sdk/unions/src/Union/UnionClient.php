@@ -10,6 +10,7 @@ use Seed\Core\Client\HttpMethod;
 use Seed\Core\Json\JsonDecoder;
 use JsonException;
 use Psr\Http\Client\ClientExceptionInterface;
+use Shape;
 
 class UnionClient
 {
@@ -36,7 +37,7 @@ class UnionClient
      * @throws SeedException
      * @throws SeedApiException
      */
-    public function get(string $id, ?array $options = null): mixed
+    public function get(string $id, ?array $options = null): Shape
     {
         try {
             $response = $this->client->sendRequest(
@@ -49,7 +50,7 @@ class UnionClient
             $statusCode = $response->getStatusCode();
             if ($statusCode >= 200 && $statusCode < 400) {
                 $json = $response->getBody()->getContents();
-                return JsonDecoder::decodeMixed($json);
+                return Shape::fromJson($json);
             }
         } catch (JsonException $e) {
             throw new SeedException(message: "Failed to deserialize response: {$e->getMessage()}", previous: $e);
@@ -72,7 +73,7 @@ class UnionClient
      * @throws SeedException
      * @throws SeedApiException
      */
-    public function update(mixed $request, ?array $options = null): bool
+    public function update(Shape $request, ?array $options = null): bool
     {
         try {
             $response = $this->client->sendRequest(
