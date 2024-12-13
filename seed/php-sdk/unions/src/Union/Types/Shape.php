@@ -42,9 +42,6 @@ readonly class Shape
         $this->_unknown = $this->options['_unknown'] ?? null;
     }
 
-    /**
-     * @param 
-     */
     static function circle(
         Circle $circle
     ): Shape {
