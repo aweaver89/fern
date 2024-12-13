@@ -43,7 +43,7 @@ class Shape extends JsonSerializableType
         $this->_unknown = $this->options['_unknown'] ?? null;
     }
 
-    static function circle(
+    public static function circle(
         Circle $circle
     ): Shape {
         return new Shape([
@@ -52,7 +52,7 @@ class Shape extends JsonSerializableType
         ]);
     }
 
-    static function square(
+    public static function square(
         Square $square
     ): Shape {
         return new Shape([
@@ -61,11 +61,33 @@ class Shape extends JsonSerializableType
         ]);
     }
 
-    static function _unknown(
+    public static function _unknown(
         mixed $_unknown
     ): Shape {
         return new Shape([
             'unknown' => $_unknown
         ]);
+    }
+
+    public function asCircle(): Circle
+    {
+        if ($this->type == 'circle') {
+            return $this->circle;
+        } else {
+            throw new \Exception(
+                "Expected type to be 'circle'; got '$this->type.'"
+            );
+        }
+    }
+
+    public function asSquare(): Square
+    {
+        if ($this->type == 'square') {
+            return $this->square;
+        } else {
+            throw new \Exception(
+                "Expected type to be 'square'; got '$this->type.'"
+            );
+        }
     }
 }
