@@ -108,16 +108,7 @@ class RawClientTest extends TestCase
     {
         try {
             $shape = $this->unionClient->get("circle");
-            switch ($shape->type) {
-                case "circle":
-                    echo "Success!\n";
-                    break;
-                case "square":
-                case "_unknown":
-                default:
-                    throw new \Exception("Expected to get circle");
-                    break;
-            }
+            $this->assertEquals($shape->type, "circle");
         } catch (\Throwable $e) {
             $this->fail('An exception was thrown: ' . $e->getMessage());
         }
@@ -128,11 +119,7 @@ class RawClientTest extends TestCase
         try {
             $shape = Shape::circle(new Circle(['radius' => 1.0]));
             $success = $this->unionClient->update($shape);
-            if ($success) {
-                echo "Success!\n";
-            } else {
-                throw new \Exception("Expected to update shape!");
-            }
+            $this->assertEquals($success, true);
         } catch (\Throwable $e) {
             $this->fail('An exception was thrown: ' . $e->getMessage());
         }
