@@ -14,12 +14,12 @@ class Shape extends JsonSerializableType
     /**
      * @var ?Circle $circle
      */
-    private ?Circle $circle;
+    public ?Circle $circle;
 
     /**
      * @var ?Square $square
      */
-    private ?Square $square;
+    public ?Square $square;
 
     /**
      * @var ?object $_unknown
