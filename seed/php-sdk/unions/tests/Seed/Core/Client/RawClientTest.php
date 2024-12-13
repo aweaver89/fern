@@ -12,12 +12,16 @@ use Seed\Core\Client\BaseApiRequest;
 use Seed\Core\Client\HttpMethod;
 use Seed\Core\Client\RawClient;
 use Seed\Core\Json\JsonApiRequest;
+use Seed\Union\Types\Circle;
+use Seed\Union\UnionClient;
+use Shape;
 
 class RawClientTest extends TestCase
 {
     private string $baseUrl = 'https://api.example.com';
     private MockHandler $mockHandler;
     private RawClient $rawClient;
+    private UnionClient $unionClient;
 
     protected function setUp(): void
     {
@@ -25,6 +29,7 @@ class RawClientTest extends TestCase
         $handlerStack = HandlerStack::create($this->mockHandler);
         $client = new Client(['handler' => $handlerStack]);
         $this->rawClient = new RawClient(['client' => $client]);
+        $this->unionClient = new UnionClient($this->rawClient);
     }
 
     public function testHeaders(): void
@@ -94,6 +99,40 @@ class RawClientTest extends TestCase
     {
         try {
             $this->rawClient->sendRequest($request);
+        } catch (\Throwable $e) {
+            $this->fail('An exception was thrown: ' . $e->getMessage());
+        }
+    }
+
+    private function useShapeResponse(): void
+    {
+        try {
+            $shape = $this->unionClient->get("circle");
+            switch ($shape->type) {
+                case "circle":
+                    echo "Success!\n";
+                    break;
+                case "square":
+                case "_unknown":
+                default:
+                    throw new \Exception("Expected to get circle");
+                    break;
+            }
+        } catch (\Throwable $e) {
+            $this->fail('An exception was thrown: ' . $e->getMessage());
+        }
+    }
+
+    private function useShapeRequest(): void
+    {
+        try {
+            $shape = Shape::circle(new Circle(['radius' => 1.0]));
+            $success = $this->unionClient->update($shape);
+            if ($success) {
+                echo "Success!\n";
+            } else {
+                throw new \Exception("Expected to update shape!");
+            }
         } catch (\Throwable $e) {
             $this->fail('An exception was thrown: ' . $e->getMessage());
         }
