@@ -1,29 +1,14 @@
 <?php
 
-class Circle {}
-
-class Square {}
-
-interface ShapeVisitor
-{
-    public function visitCircle(Circle $circle);
-    public function visitSquare(Square $square);
-    public function _visitUnknown(object $unknown);
-}
-
-enum ShapeType
-{
-    case CIRCLE;
-    case SQUARE;
-    case UNKNOWN;
-}
+use Seed\Union\Types\Circle;
+use Seed\Union\Square;
 
 readonly class Shape
 {
     /**
      * @var ShapeType $type
      */
-    public ShapeType $type;
+    public string $type;
 
     /**
      * @var ?Circle $circle
@@ -36,25 +21,25 @@ readonly class Shape
     private ?Square $square;
 
     /**
-     * @var ?object $unknown
+     * @var ?object $_unknown
      */
-    private ?object $unknown;
+    private ?object $_unknown;
 
     /**
      * @param ?array{
      *   type?: ShapeType,
      *   circle?: ?Circle,
      *   square?: ?Square,
-     *   unknown?: ?object,
+     *   _unknown?: ?object,
      * } $options
      */
     private function __construct(
         private readonly ?array $options = null,
     ) {
-        $this->type = $this->options['type'] ?? ShapeType::UNKNOWN;
+        $this->type = $this->options['type'] ?? '_unknown';
         $this->circle = $this->options['circle'] ?? null;
         $this->square = $this->options['square'] ?? null;
-        $this->unknown = $this->options['unknown'] ?? null;
+        $this->_unknown = $this->options['_unknown'] ?? null;
     }
 
     /**
@@ -63,7 +48,7 @@ readonly class Shape
     static function circle(Circle $circle): Shape
     {
         return new Shape([
-            'type' => ShapeType::CIRCLE,
+            'type' => 'circle',
             'circle' => $circle
         ]);
     }
@@ -71,34 +56,15 @@ readonly class Shape
     static function square(Square $square): Shape
     {
         return new Shape([
-            'type' => ShapeType::SQUARE,
+            'type' => 'square',
             'square' => $square
         ]);
     }
 
-    static function _unknown(object $unknown): Shape
+    static function _unknown(mixed $_unknown): Shape
     {
         return new Shape([
-            'unknown' => $unknown
+            'unknown' => $_unknown
         ]);
-    }
-
-    public function isCircle(): bool
-    {
-        return $this->type == ShapeType::CIRCLE;
-    }
-
-    public function isSquare(): bool
-    {
-        return $this->type == ShapeType::SQUARE;
-    }
-
-    public function visit(ShapeVisitor $visitor)
-    {
-        return match ($this->type) {
-            ShapeType::CIRCLE => $visitor->visitCircle($this->circle),
-            ShapeType::SQUARE => $visitor->visitSquare($this->square),
-            ShapeType::UNKNOWN => $visitor->_visitUnknown($this),
-        };
     }
 }
