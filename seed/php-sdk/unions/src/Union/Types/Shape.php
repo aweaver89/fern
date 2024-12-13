@@ -7,7 +7,7 @@ use Seed\Union\Square;
 class Shape extends JsonSerializableType
 {
     /**
-     * @var 'circle'|'square' $type 
+     * @var 'circle'|'square'|'_unknown' $type 
      */
     public string $type;
 
@@ -28,7 +28,7 @@ class Shape extends JsonSerializableType
 
     /**
      * @param ?array{
-     *   type?: 'circle'|'square',
+     *   type?: 'circle'|'square'|'_unknown',
      *   circle?: ?Circle,
      *   square?: ?Square,
      *   _unknown?: ?object,
