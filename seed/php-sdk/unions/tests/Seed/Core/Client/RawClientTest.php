@@ -95,16 +95,7 @@ class RawClientTest extends TestCase
         $this->assertEquals(json_encode($body), (string)$lastRequest->getBody());
     }
 
-    private function sendRequest(BaseApiRequest $request): void
-    {
-        try {
-            $this->rawClient->sendRequest($request);
-        } catch (\Throwable $e) {
-            $this->fail('An exception was thrown: ' . $e->getMessage());
-        }
-    }
-
-    private function useShapeResponse(): void
+    public function useShapeResponse(): void
     {
         try {
             $shape = $this->unionClient->get("circle");
@@ -116,12 +107,21 @@ class RawClientTest extends TestCase
         }
     }
 
-    private function useShapeRequest(): void
+    public function useShapeRequest(): void
     {
         try {
             $shape = Shape::circle(new Circle(['radius' => 1.0]));
             $success = $this->unionClient->update($shape);
             $this->assertEquals($success, true);
+        } catch (\Throwable $e) {
+            $this->fail('An exception was thrown: ' . $e->getMessage());
+        }
+    }
+
+    private function sendRequest(BaseApiRequest $request): void
+    {
+        try {
+            $this->rawClient->sendRequest($request);
         } catch (\Throwable $e) {
             $this->fail('An exception was thrown: ' . $e->getMessage());
         }

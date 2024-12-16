@@ -1,5 +1,7 @@
 <?php
 
+use Seed\Core\Json\JsonSerializableType;
+
 class UnionWithLiteral extends JsonSerializableType
 {
     /**
@@ -26,14 +28,18 @@ class UnionWithLiteral extends JsonSerializableType
      * @param ?array{
      *   base: 'base',
      *   type?: 'fern'|'_unknown',
-     *   fern?: ?'fern'
-     *   _unknown?: mixed
+     *   fern?: ?'fern',
+     *   _unknown?: mixed,
      * } $options
      */
     private function __construct(
         private readonly ?array $options = null,
     ) {
-        $this->base = $this->options['base'];
+        if ($this->options != null) {
+            $this->base = $this->options['base'];
+        } else {
+            throw new \Exception("Missing required argument 'base'");
+        }
         $this->type = $this->options['type'] ?? '_unknown';
         $this->fern = $this->options['fern'] ?? null;
         $this->_unknown = $this->options['_unknown'] ?? null;
@@ -60,7 +66,7 @@ class UnionWithLiteral extends JsonSerializableType
 
     public function asFern(): string
     {
-        if ($this->type == 'fern') {
+        if ($this->type == 'fern' && $this->fern != null) {
             return $this->fern;
         } else {
             throw new \Exception(

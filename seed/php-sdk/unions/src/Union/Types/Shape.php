@@ -71,7 +71,7 @@ class Shape extends JsonSerializableType
 
     public function asCircle(): Circle
     {
-        if ($this->type == 'circle') {
+        if ($this->type == 'circle' && $this->circle != null) {
             return $this->circle;
         } else {
             throw new \Exception(
@@ -82,7 +82,7 @@ class Shape extends JsonSerializableType
 
     public function asSquare(): Square
     {
-        if ($this->type == 'square') {
+        if ($this->type == 'square' && $this->square != null) {
             return $this->square;
         } else {
             throw new \Exception(

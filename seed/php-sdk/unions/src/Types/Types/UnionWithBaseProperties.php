@@ -38,26 +38,30 @@ class UnionWithBaseProperties extends JsonSerializableType
     /**
      * @param ?array{
      *   id: string,
-     *   type?: 'integer'|'string'|'foo'|'_unknown'
-     *   integer?: ?int
-     *   string?: ?string
-     *   foo?: ?Foo
-     *   _unknown?: mixed
+     *   type?: 'integer'|'string'|'foo'|'_unknown',
+     *   integer?: ?int,
+     *   string?: ?string,
+     *   foo?: ?Foo,
+     *   _unknown?: mixed,
      * } $options
      */
     private function __construct(
         private readonly ?array $options = null,
     ) {
-        $this->id = $this->options['id'];
+        if ($this->options != null) {
+            $this->id = $this->options['id'];
+        } else {
+            throw new \Exception("Missing required argument 'id'");
+        }
         $this->type = $this->options['type'] ?? '_unknown';
         $this->integer = $this->options['integer'] ?? null;
         $this->string = $this->options['string'] ?? null;
         $this->foo = $this->options['foo'] ?? null;
-        $this->_unknown = $this->options['unknown'] ?? null;
+        $this->_unknown = $this->options['_unknown'] ?? null;
     }
 
     public static function integer(
-        int $id,
+        string $id,
         int $integer
     ): UnionWithBaseProperties {
         return new UnionWithBaseProperties([
@@ -68,7 +72,7 @@ class UnionWithBaseProperties extends JsonSerializableType
     }
 
     public static function string(
-        int $id,
+        string $id,
         string $string
     ): UnionWithBaseProperties {
         return new UnionWithBaseProperties([
@@ -79,7 +83,7 @@ class UnionWithBaseProperties extends JsonSerializableType
     }
 
     public static function foo(
-        int $id,
+        string $id,
         Foo $foo
     ): UnionWithBaseProperties {
         return new UnionWithBaseProperties([
@@ -90,7 +94,7 @@ class UnionWithBaseProperties extends JsonSerializableType
     }
 
     public static function _unknown(
-        int $id,
+        string $id,
         mixed $_unknown
     ): UnionWithBaseProperties {
         return new UnionWithBaseProperties([
@@ -102,7 +106,7 @@ class UnionWithBaseProperties extends JsonSerializableType
 
     public function asInteger(): int
     {
-        if ($this->type == 'integer') {
+        if ($this->type == 'integer' && $this->integer != null) {
             return $this->integer;
         } else {
             throw new \Exception(
@@ -113,7 +117,7 @@ class UnionWithBaseProperties extends JsonSerializableType
 
     public function asString(): string
     {
-        if ($this->type == 'string') {
+        if ($this->type == 'string' && $this->string != null) {
             return $this->string;
         } else {
             throw new \Exception(
@@ -124,7 +128,7 @@ class UnionWithBaseProperties extends JsonSerializableType
 
     public function asFoo(): Foo
     {
-        if ($this->type == 'foo') {
+        if ($this->type == 'foo' && $this->foo != null) {
             return $this->foo;
         } else {
             throw new \Exception(

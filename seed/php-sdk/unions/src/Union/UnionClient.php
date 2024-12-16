@@ -33,7 +33,7 @@ class UnionClient
      * @param ?array{
      *   baseUrl?: string,
      * } $options
-     * @return mixed
+     * @return Shape
      * @throws SeedException
      * @throws SeedApiException
      */
@@ -65,7 +65,7 @@ class UnionClient
     }
 
     /**
-     * @param mixed $request
+     * @param Shape $request
      * @param ?array{
      *   baseUrl?: string,
      * } $options

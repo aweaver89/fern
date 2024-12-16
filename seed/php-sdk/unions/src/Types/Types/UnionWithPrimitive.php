@@ -2,7 +2,7 @@
 
 use Seed\Core\Json\JsonSerializableType;
 
-class UnionWithDiscriminant extends JsonSerializableType
+class UnionWithPrimitive extends JsonSerializableType
 {
     /**
      * @var 'integer'|'string'|'_unknown' $type
@@ -43,8 +43,8 @@ class UnionWithDiscriminant extends JsonSerializableType
 
     public static function integer(
         int $integer
-    ): UnionWithDiscriminant {
-        return new UnionWithDiscriminant([
+    ): UnionWithPrimitive {
+        return new UnionWithPrimitive([
             'type' => 'integer',
             'integer' => $integer
         ]);
@@ -52,8 +52,8 @@ class UnionWithDiscriminant extends JsonSerializableType
 
     public static function string(
         string $string
-    ): UnionWithDiscriminant {
-        return new UnionWithDiscriminant([
+    ): UnionWithPrimitive {
+        return new UnionWithPrimitive([
             'type' => 'string',
             'string' => $string
         ]);
@@ -61,15 +61,15 @@ class UnionWithDiscriminant extends JsonSerializableType
 
     public static function _unknown(
         mixed $_unknown
-    ): UnionWithDiscriminant {
-        return new UnionWithDiscriminant([
+    ): UnionWithPrimitive {
+        return new UnionWithPrimitive([
             '_unknown' => $_unknown
         ]);
     }
 
     public function asInteger(): int
     {
-        if ($this->type == 'integer') {
+        if ($this->type == 'integer' && $this->integer != null) {
             return $this->integer;
         } else {
             throw new \Exception(
@@ -80,7 +80,7 @@ class UnionWithDiscriminant extends JsonSerializableType
 
     public function asString(): string
     {
-        if ($this->type == 'string') {
+        if ($this->type == 'string' && $this->string != null) {
             return $this->string;
         } else {
             throw new \Exception(

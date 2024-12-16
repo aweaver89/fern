@@ -71,7 +71,7 @@ class UnionWithDiscriminant extends JsonSerializableType
 
     public function asFoo(): Foo
     {
-        if ($this->type == 'foo') {
+        if ($this->type == 'foo' && $this->foo != null) {
             return $this->foo;
         } else {
             throw new \Exception(
@@ -82,7 +82,7 @@ class UnionWithDiscriminant extends JsonSerializableType
 
     public function asBar(): Bar
     {
-        if ($this->type == 'bar') {
+        if ($this->type == 'bar' && $this->bar != null) {
             return $this->bar;
         } else {
             throw new \Exception(
