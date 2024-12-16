@@ -1,5 +1,8 @@
 <?php
 
+namespace Seed\Union\Types;
+
+use Seed\Core\Json\JsonProperty;
 use Seed\Core\Json\JsonSerializableType;
 use Seed\Union\Types\Circle;
 use Seed\Union\Types\Square;
@@ -9,16 +12,19 @@ class Shape extends JsonSerializableType
     /**
      * @var 'circle'|'square'|'_unknown' $type 
      */
+    #[JsonProperty('type')]
     public string $type;
 
     /**
      * @var ?Circle $circle
      */
+    #[JsonProperty('circle')]
     public ?Circle $circle;
 
     /**
      * @var ?Square $square
      */
+    #[JsonProperty('square')]
     public ?Square $square;
 
     /**
@@ -34,7 +40,7 @@ class Shape extends JsonSerializableType
      *   _unknown?: mixed,
      * } $options
      */
-    private function __construct(
+    public function __construct(
         private readonly ?array $options = null,
     ) {
         $this->type = $this->options['type'] ?? '_unknown';
