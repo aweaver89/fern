@@ -16,37 +16,21 @@ class Shape extends JsonSerializableType
     public string $type;
 
     /**
-     * @var ?Circle $circle
+     * @var Circle|Square|mixed
      */
-    #[JsonProperty('circle')]
-    public ?Circle $circle;
-
-    /**
-     * @var ?Square $square
-     */
-    #[JsonProperty('square')]
-    public ?Square $square;
-
-    /**
-     * @var mixed $_unknown
-     */
-    public mixed $_unknown;
+    public string $value;
 
     /**
      * @param ?array{
      *   type?: 'circle'|'square'|'_unknown',
-     *   circle?: ?Circle,
-     *   square?: ?Square,
-     *   _unknown?: mixed,
+     *   value?: Circle|Square|mixed,
      * } $options
      */
     public function __construct(
         private readonly ?array $options = null,
     ) {
         $this->type = $this->options['type'] ?? '_unknown';
-        $this->circle = $this->options['circle'] ?? null;
-        $this->square = $this->options['square'] ?? null;
-        $this->_unknown = $this->options['_unknown'] ?? null;
+        $this->value = $this->options['value'] ?? null;
     }
 
     public static function circle(
@@ -77,23 +61,35 @@ class Shape extends JsonSerializableType
 
     public function asCircle(): Circle
     {
-        if ($this->type == 'circle' && $this->circle != null) {
-            return $this->circle;
-        } else {
+        if ($this->type != 'circle') {
             throw new \Exception(
                 "Expected type to be 'circle'; got '$this->type.'"
             );
         }
+
+        if (!($this->value instanceof Circle)) {
+            throw new \Exception(
+                "Expected value to be instance of Circle."
+            );
+        }
+
+        return $this->value;
     }
 
     public function asSquare(): Square
     {
-        if ($this->type == 'square' && $this->square != null) {
-            return $this->square;
-        } else {
+        if ($this->type != 'square') {
             throw new \Exception(
                 "Expected type to be 'square'; got '$this->type.'"
             );
         }
+
+        if (!($this->value instanceof Square)) {
+            throw new \Exception(
+                "Expected value to be instance of Square."
+            );
+        }
+
+        return $this->value;
     }
 }
