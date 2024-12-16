@@ -4,7 +4,7 @@ use Seed\Core\Json\JsonSerializableType;
 use Seed\Types\Types\Foo;
 use Seed\Types\Types\Bar;
 
-class Union extends JsonSerializableType
+class UnionWithDiscriminant extends JsonSerializableType
 {
     /**
      * @var 'foo'|'bar'|'_unknown' $type
@@ -45,8 +45,8 @@ class Union extends JsonSerializableType
 
     public static function foo(
         Foo $foo
-    ): Union {
-        return new Union([
+    ): UnionWithDiscriminant {
+        return new UnionWithDiscriminant([
             'type' => 'foo',
             'foo' => $foo
         ]);
@@ -54,8 +54,8 @@ class Union extends JsonSerializableType
 
     public static function bar(
         Bar $bar
-    ): Union {
-        return new Union([
+    ): UnionWithDiscriminant {
+        return new UnionWithDiscriminant([
             'type' => 'bar',
             'bar' => $bar
         ]);
@@ -63,8 +63,8 @@ class Union extends JsonSerializableType
 
     public static function _unknown(
         mixed $_unknown
-    ): Union {
-        return new Union([
+    ): UnionWithDiscriminant {
+        return new UnionWithDiscriminant([
             '_unknown' => $_unknown
         ]);
     }
