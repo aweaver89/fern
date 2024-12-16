@@ -109,7 +109,7 @@ class RawClientTest extends TestCase
         try {
             $shape = $this->unionClient->get("circle");
             $this->assertEquals($shape->type, "circle");
-            $circle = $shape->circle;
+            $circle = $shape->asCircle();
             $this->assertEquals($circle->radius, 1.0);
         } catch (\Throwable $e) {
             $this->fail('An exception was thrown: ' . $e->getMessage());
