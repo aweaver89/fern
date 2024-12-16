@@ -2,7 +2,7 @@
 
 use Seed\Core\Json\JsonSerializableType;
 use Seed\Union\Types\Circle;
-use Seed\Union\Square;
+use Seed\Union\Types\Square;
 
 class Shape extends JsonSerializableType
 {
@@ -22,16 +22,16 @@ class Shape extends JsonSerializableType
     public ?Square $square;
 
     /**
-     * @var ?object $_unknown
+     * @var mixed $_unknown
      */
-    public ?object $_unknown;
+    public mixed $_unknown;
 
     /**
      * @param ?array{
      *   type?: 'circle'|'square'|'_unknown',
      *   circle?: ?Circle,
      *   square?: ?Square,
-     *   _unknown?: ?object,
+     *   _unknown?: mixed,
      * } $options
      */
     private function __construct(
@@ -65,7 +65,7 @@ class Shape extends JsonSerializableType
         mixed $_unknown
     ): Shape {
         return new Shape([
-            'unknown' => $_unknown
+            '_unknown' => $_unknown
         ]);
     }
 
